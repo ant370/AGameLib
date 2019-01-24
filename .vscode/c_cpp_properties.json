@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "name": "me",
+            "includePath": [
+                "${myDefaultIncludePath}",
+                "AGame/Headers",
+                "${workspaceFolder}/AGame/Libs/SDL2-2.0.9/x86_64-w64-mingw32/include/SDL2",
+                "${workspaceFolder}/AGame/Libs/glew-2.1.0/include/GL"
+            ],
+            "cStandard": "c11"
+        }
+    ],
+    "version": 4
+}

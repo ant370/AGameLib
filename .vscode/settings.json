@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "math.h": "c",
+        "stdio.h": "c",
+        "stdbool.h": "c",
+        "glew.h": "c",
+        "graphics.h": "c",
+        "cmath": "c",
+        "cstdlib": "c"
+    }
+}
