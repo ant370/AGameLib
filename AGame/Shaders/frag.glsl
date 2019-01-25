@@ -64,7 +64,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     if(projCoords.z > 1.0)
         shadow = 0.0;
 
-    int count = 1;
+    int count = 13;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
     for(int x = -count; x <= count; ++x)
     {
@@ -85,8 +85,8 @@ void main()
     vec4 Normal = normalize(outNormal);
 
     // Ambient and directional light
-    float ambientStrength = 0.25;
-    float sunStrength = 0.2;
+    float ambientStrength = 0.025;
+    float sunStrength = 4.2;
 
     vec3 ambient = ambientStrength * vec3(1.0,1.0,1.0); 
     float diff = max(dot(Normal, directLightPos), 0.0); 

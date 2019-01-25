@@ -198,6 +198,8 @@ GraphicsRenderScene(GraphicsScene *scene)
 
     Matrix lightProjection = MatrixOrtho(-20.0f, 20.0f, 20.0f, -20.0f, 0.10f, 150.0f);
 
+    projection = MatrixOrtho(-30.0f,  30.0f,  30.0f, -30.0f, 0.10f, 150.0f);
+
 
     for ( int i = 0; i < scene->objectsCount; i++)
     {
@@ -242,7 +244,7 @@ GraphicsRenderScene(GraphicsScene *scene)
 
         glBindVertexArray(obj->vao);
         glDrawElements(GL_TRIANGLES, obj->geom->numTris * 3, GL_UNSIGNED_INT,0); 
-
+        
         
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0);   

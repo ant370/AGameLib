@@ -1,7 +1,12 @@
 
 #todo
 
-MD2 File Input
-MD2 Rendering
+MD2 File Input - DONE
+MD2 Rendering - PARTIALLY DONE
+
+Point Light Shadow Mapping -
+
+Isometric Engine.
+
 Audio File Load
 Audio Play

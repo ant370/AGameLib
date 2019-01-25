@@ -83,17 +83,18 @@ int main(int argc, char *argv[])
 	plane->scale = (Vec4) { 50.0f, 0.20f, 50.0f, 1.0f};
 	plane->location = (Vec4) { 5.0f, 0.0f,  5.0f, 1.0f};
 	GraphicsObjectSetGeom(plane, GraphicsGeomCreateBox());
+	GraphicsSceneAddObject(scene, plane);
 
-	scene->cameraLocation = (Vec4) {   -25.0f,  20.0f,-20.0f, 1.0f};
+	scene->cameraLocation = (Vec4) {   -50.0f,  75.0f,-50.0f, 1.0f};
 	scene->cameraLookat = (Vec4) {0.0f, 0.0f,0.0f,1.0f};
 	scene->directionalLight.direction = (Vec4) {8.0f, 8.0f,  8.0f,1.0f};
 	scene->directionalLight.color = (Vec4) { 0.10f, 0.10f, 0.10f, 1.0f};
 
 	
-	scene->directionalLight.direction = (Vec4) {-8.0f, 8.0f, - 8.0f,1.0f};
-	scene->directionalLight.color = (Vec4) { 0.00f, 0.00f, 0.00f, 1.0f};
-	scene->pointLights[0].color = (Vec4) { 2.4f, 0.1f, 0.1f, 1.0f};
-	scene->pointLights[0].position = (Vec4) { 1.0f, 3.0f, 1.0f, 1.0f};
+	scene->directionalLight.direction = (Vec4) {8.0f, 8.0f, 8.0f,1.0f};
+	scene->directionalLight.color = (Vec4) { 0.11f, 0.01f, 0.01f, 1.0f};
+	scene->pointLights[0].color = (Vec4) { 0.01f, 0.101f, 0.001f, 1.0f};
+	scene->pointLights[0].position = (Vec4) { 1.0f, 5.0f, 1.0f, 1.0f};
 	Uint32 startclock = 0;
 	Uint32 deltaclock = 0;
 	Uint32 currentFPS = 0;
@@ -108,7 +109,7 @@ int main(int argc, char *argv[])
  
 		scene->directionalLight.direction = (Vec4) {16.0f * sin(t), 4.0f,  -9.0f*cos(t),1.0f};
 		box->rotationAngle = t;
-		box->rotation = (Vec4) {0.0f, 1.0f, 0.0f, 1.0f};
+		box->rotation = (Vec4) {0.0f, 0.0f, 1.0f, 1.0f};
 	}
 	
  	SDL_Quit();

@@ -140,4 +140,7 @@ void GraphicsRenderScene(GraphicsScene *scene);
 void GraphicsRenderDepthTexture(GraphicsScene *scene);
 void GraphicsRenderTexture(GraphicsScene *scene, unsigned int texture);
 
+
+
+void  GraphicsGeomCalcNormals(GraphicsGeom *geom);
 #endif

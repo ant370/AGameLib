@@ -2,7 +2,7 @@
 #include "Resource.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "lodepng.h"
+#include "lodepng.h" 
 
 GameResource * GameResourceLoadFile(char * file)
 {

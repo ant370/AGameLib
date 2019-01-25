@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Graphics.h"
 
 typedef struct md2_header_t
 {
@@ -129,15 +130,17 @@ GameResource * GameResourceLoadMD2(char * file)
       {   
           for (int k =0; k < 3; k++)
           {
-            int vertex = triangles[j].vertex[k];
+            int revk = 2-k;
+
+            int vertex = triangles[j].vertex[revk];
             md2_vertex_t vert = ((md2_vertex_t *)( frameData + header->framesize*i + 12 + 12 + 16))[vertex ];
 
             float x = (frame.scale[0] * (float)vert.v[0]) + frame.translate[0];
             float y = (frame.scale[1] * (float)vert.v[1]) + frame.translate[1];
             float z = (frame.scale[2] * (float)vert.v[2]) + frame.translate[2];
 
-            float s = ((float)texts[triangles[j].st[k]].s)/((float) header->skinwidth);
-            float t = ((float)texts[triangles[j].st[k]].t)/((float) header->skinheight);
+            float s = ((float)texts[triangles[j].st[revk]].s)/((float) header->skinwidth);
+            float t = ((float)texts[triangles[j].st[revk]].t)/((float) header->skinheight);
           
             geom->verts[index] = (VertexPositionTexture) 
                 { .Position = {x,y,z, 1.0f} ,
@@ -168,6 +171,8 @@ GameResource * GameResourceLoadMD2(char * file)
     free(texts);
     //free(frames);
     free(frameData);
+
+    GraphicsGeomCalcNormals(geom);
 
     return model;
 }

@@ -6,6 +6,7 @@
         "glew.h": "c",
         "graphics.h": "c",
         "cmath": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "physics.h": "c"
     }
 }
