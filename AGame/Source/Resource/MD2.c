@@ -80,7 +80,7 @@ GameResource * GameResourceLoadMD2(char * file)
     //Transfer structured data
     md2_header_t *header = malloc(sizeof(md2_header_t));
     md2_triangle_t *triangles = malloc(sizeof(md2_triangle_t) * header->num_tris);
-    md2_frame_t * frames = malloc(sizeof(md2_frame_t) * header->num_frames);
+    md2_frame_t * frames; //no allocation needed
     md2_texCoord_t * texts = malloc(sizeof(md2_texCoord_t) * header->num_st);
 
     memcpy(header, resc->data, sizeof(md2_header_t)); 
@@ -160,92 +160,14 @@ GameResource * GameResourceLoadMD2(char * file)
   
     model->info.md2.model.geom = geom; 
     
+    GameResourceFree(resc);
+
     //Cleanup resources
-   
+    free(header);
+    free(triangles);
+    free(texts);
+    //free(frames);
+    free(frameData);
 
     return model;
 }
-/*
-GameResource * GameResourceLoadMD2(char * file)
-{
-    //Get data
-    GameResource * resc = GameResourceLoadFile(file);
-
-    GameResource * model = malloc(sizeof(GameResource));
-    model->data = NULL;
-    model->id = 0;
-    model->isLoaded = 1;
-    model->resourceType = 0;
-    
-
-    //map file to header
-    md2_header_t * header = ( md2_header_t *) resc->data ;
-    md2_skin_t * skins = (md2_skin_t *) (resc->data + header->offset_skins);
-    md2_texCoord_t * text = (md2_texCoord_t * ) (resc->data + header->offset_st);
-    md2_triangle_t * triangles = (md2_triangle_t *)( resc->data + header->offset_tris);
-    //md2_frame_t * frams = (md2_frame_t *) (resc->data + header->offset_frames);
-     
-  
-    //Creating Graphics Geometry - 
-    GraphicsGeom * geom = malloc(sizeof(GraphicsGeom));
-    geom->verts = malloc(sizeof(VertexPositionTexture) * header->num_frames * header->num_vertices * 3);
-    geom->index = malloc(sizeof(unsigned int) * header->num_tris * 3);
-    geom->numTris = header->num_tris;
-    geom->numVerts = header->num_vertices; 
-
-    printf ("verts: %i", geom->numVerts);
-    printf ("tris: %i", geom->numTris);
-
-    //Set the index
-    for (int i = 0; i < header->num_tris; i++)
-    {
-        geom->index[3*i + 0] = (unsigned int)triangles[i].vertex[0];
-        geom->index[3*i + 1] = (unsigned int)triangles[i].vertex[1];
-        geom->index[3*i + 2] = (unsigned int)triangles[i].vertex[2];
-
-        printf("index %i %i %i \n", geom->index[3*i], geom->index[3*i + 1], geom->index[3*i + 2]);
-    }
-
-    //unpack the triangles
-    const unsigned int sizeOfFrame = 16 + sizeof(vec3_t) + sizeof(vec3_t) + sizeof(md2_vertex_t) * header->num_vertices;
-    printf("size of frame: %i \n", sizeOfFrame);
-    for ( unsigned int i =0; i < header->num_frames; i++)
-    {
-      
-      md2_frame_t * frame = (md2_frame_t *) (resc->data + header->offset_frames + sizeOfFrame);
-      frame->verts = (md2_vertex_t *) ( ((void*) frame)+ 16 + 12 + 12  );
-
-      printf("frame %f %f \n",   frame->scale[0], frame->translate[0]);
-
-      //For each triangle 
-      for (int j = 0; j < header->num_tris; j++)
-      {
-        for (int k = 0; k < 3; k++)
-        {
-           
-          md2_vertex_t * vert = frame->verts +  triangles[j].vertex[k] ;
-           
-          float x = (frame->scale[0] * (float)vert->v[0]) + frame->translate[0];
-          float y = (frame->scale[1] * (float)vert->v[1]) + frame->translate[1];
-          float z = (frame->scale[2] * (float)vert->v[2]) + frame->translate[2];
-
-          float s = ((float)text[triangles[j].st[k]].s)/((float) header->skinwidth);
-          float t = ((float)text[triangles[j].st[k]].t)/((float) header->skinheight);
-          
-          geom->verts[i * 3 * header->num_frames +   3*j + k] = (VertexPositionTexture) 
-              { .Position = {x,y,z, 1.0f} ,
-                .Texture = {0.5f,0.5f,0.0f, 0.0f},
-                .Normal = {0.0f, 1.0f, 0.0f, 1.0f}}; 
-
-          printf(" %f %f %f \n",x,y,z);
-
-        }
-      } 
-
-    }
-
-    model->info.md2.model.geom = geom;
-    
- 
-    return model;
-} */

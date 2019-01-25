@@ -3,6 +3,7 @@
 #define ANT_GRAPHICS_H
 
 #include "Types.h"
+#include <math.h>
  
 unsigned int GraphicsCreateVBO();
 unsigned int GraphicsVBOTransfer(unsigned int vbo,int size, VertexPositionTexture * verts);
@@ -135,7 +136,7 @@ GraphicsObject * GraphicsObjectCreate();
 void GraphicsObjectSetGeom(GraphicsObject * obj, GraphicsGeom * geom);
 
 void GraphicsShaderSetUniformVec4(unsigned int program, char *name, Vec4 vec );
-GraphicsRenderScene(GraphicsScene *scene);
+void GraphicsRenderScene(GraphicsScene *scene);
 void GraphicsRenderDepthTexture(GraphicsScene *scene);
 void GraphicsRenderTexture(GraphicsScene *scene, unsigned int texture);
 
