@@ -1,5 +1,6 @@
 
 #include "Graphics.h"
+#include "Math.h"
 #include "glew.h"
 #include <stdio.h>
 
@@ -178,7 +179,7 @@ GraphicsRenderScene(GraphicsScene *scene)
     glDebugMessageCallback( MessageCallback, 0 );
 
     glViewport(0, 0, 1200,900);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.20f, 0.20f, 0.20f, 1.0f);
     glClearDepth(1.0f);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 

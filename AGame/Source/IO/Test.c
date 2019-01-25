@@ -23,8 +23,9 @@ int main(int argc, char *argv[])
 	printf("%s", prog.errorFrag);
 	printf("%s", prog.errorVert);
 
-	GameResourceLoadMD2("faerie.md2");
+	GameResource * md2model = GameResourceLoadMD2("faerie.md2");   
 	
+
 	//Create scene
 	GraphicsScene *scene = GraphicsSceneCreate();
 	GraphicsObject *box = GraphicsObjectCreate();
@@ -43,13 +44,11 @@ int main(int argc, char *argv[])
 	
 	mat.albido = (GraphicsTexture) {   text }; 
 	mat.shader = prog.programId; 
-	box->location = (Vec4) {0,0,0, 1.0f};
-	GraphicsObjectSetGeom(box, GraphicsGeomSphere(3));
+	box->location = (Vec4) {-5.0f,2.0f,-2.0f, 1.0f};
+	GraphicsObjectSetGeom(box, md2model->info.md2.model.geom);
 	GraphicsSceneAddObject(scene, box);	
-	box->material = &mat2;
-	box->rotation = (Vec4) {0,1.0f,0,1.0};
-	box->rotationAngle = 3.10f;
-	box->scale = (Vec4) { 1.0f, 2.0f, 1.0f, 1.0f};
+	box->material = &mat2; 
+	box->scale = (Vec4) { 0.5f, 0.5f, 0.5f, 0.5f};
 	
 
 	GraphicsObject *box2 = GraphicsObjectCreate();
@@ -84,17 +83,17 @@ int main(int argc, char *argv[])
 	plane->scale = (Vec4) { 50.0f, 0.20f, 50.0f, 1.0f};
 	plane->location = (Vec4) { 5.0f, 0.0f,  5.0f, 1.0f};
 	GraphicsObjectSetGeom(plane, GraphicsGeomCreateBox());
-	GraphicsSceneAddObject(scene, plane);
 
-	scene->cameraLocation = (Vec4) {   -15.0f,  10.0f,-10.0f, 1.0f};
-	scene->cameraLookat = (Vec4) {0.0f, 5.0f,0.0f,1.0f};
+	scene->cameraLocation = (Vec4) {   -25.0f,  20.0f,-20.0f, 1.0f};
+	scene->cameraLookat = (Vec4) {0.0f, 0.0f,0.0f,1.0f};
 	scene->directionalLight.direction = (Vec4) {8.0f, 8.0f,  8.0f,1.0f};
 	scene->directionalLight.color = (Vec4) { 0.10f, 0.10f, 0.10f, 1.0f};
 
 	
 	scene->directionalLight.direction = (Vec4) {-8.0f, 8.0f, - 8.0f,1.0f};
-	scene->directionalLight.color = (Vec4) { 0.40f, 0.40f, 0.40f, 1.0f};
-	 
+	scene->directionalLight.color = (Vec4) { 0.00f, 0.00f, 0.00f, 1.0f};
+	scene->pointLights[0].color = (Vec4) { 2.4f, 0.1f, 0.1f, 1.0f};
+	scene->pointLights[0].position = (Vec4) { 1.0f, 3.0f, 1.0f, 1.0f};
 	Uint32 startclock = 0;
 	Uint32 deltaclock = 0;
 	Uint32 currentFPS = 0;
@@ -108,11 +107,8 @@ int main(int argc, char *argv[])
 		float t = (float)(clock()) / 1000.0f;  
  
 		scene->directionalLight.direction = (Vec4) {16.0f * sin(t), 4.0f,  -9.0f*cos(t),1.0f};
-		
-		
-		deltaclock = SDL_GetTicks() - startclock;
-		startclock = SDL_GetTicks();
-				 
+		box->rotationAngle = t;
+		box->rotation = (Vec4) {0.0f, 1.0f, 0.0f, 1.0f};
 	}
 	
  	SDL_Quit();

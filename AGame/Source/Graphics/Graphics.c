@@ -96,6 +96,8 @@ unsigned int GraphicsCreateVAOFromGeom(GraphicsGeom * geom)
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);  
 
+    //Normals 
+
     // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
     // 1. bind Vertex Array Object
     glBindVertexArray(VAO);
@@ -116,6 +118,8 @@ unsigned int GraphicsCreateVAOFromGeom(GraphicsGeom * geom)
     glEnableVertexAttribArray(1);   
     glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)( 8 * sizeof(float))); 
     glEnableVertexAttribArray(2);  
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)( 12 * sizeof(float))); 
+    glEnableVertexAttribArray(3);  
 
     return VAO;
 }

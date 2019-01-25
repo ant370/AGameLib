@@ -2,39 +2,8 @@
 #define ANT_MATH_H
 
 #include <stdio.h>
+#include "Types.h"
 
-typedef float VecFloat;
-
- 
-typedef struct Vec4
-{
-	VecFloat x;
-	VecFloat y;
-	VecFloat z;
-	VecFloat w;
-
-} Vec4;
-
-typedef struct Matrix
-{
-	VecFloat a_0_0;
-	VecFloat a_0_1;
-	VecFloat a_0_2;
-	VecFloat a_0_3;
-	VecFloat a_1_0;
-	VecFloat a_1_1;
-	VecFloat a_1_2;
-	VecFloat a_1_3;
-	VecFloat a_2_0;
-	VecFloat a_2_1;
-	VecFloat a_2_2;
-	VecFloat a_2_3;
-	VecFloat a_3_0;
-	VecFloat a_3_1;
-	VecFloat a_3_2;
-	VecFloat a_3_3;
-
-} Matrix;
 
 ////Vector Functions
 Vec4 Vec4Add(Vec4 a, Vec4 b);
@@ -42,10 +11,7 @@ Vec4 Vec4Cross(Vec4 a, Vec4 b);
 Vec4 Vec4Sub(Vec4 a, Vec4 b);
 Vec4 Vec4Normal(Vec4 a);
 VecFloat Vec4Dot(const Vec4 a, const Vec4 b); 
-VecFloat VecLenSq(Vec4 a); 
-
-
-
+VecFloat VecLenSq(Vec4 a);  
 Matrix MatrixId();
 
 #define MACRO_FUNCTION_ROW_i(i) a.a_##i##_0, a.a_##i##_1, a.a_##i##_2, a.a_##i##_3
@@ -134,8 +100,7 @@ const int MathPermutations4[24 * 5];
 int MathPerumtationParity(int xs[], int n);
 float MathDeterminant(const Matrix m);
 float MatrixTrace(const Matrix m); 
-Matrix MathMatrixInv(Matrix a);
-
+Matrix MathMatrixInv(Matrix a); 
 //Helper Functions
 void MatrixStringFormated(Matrix m);
 #endif

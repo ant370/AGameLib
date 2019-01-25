@@ -1,6 +1,8 @@
 
 #ifndef RESOURCE_H
 #define RESOURCE_H
+ 
+#include "Types.h"
 
 typedef enum GameResourceType
 {
@@ -9,6 +11,12 @@ typedef enum GameResourceType
     GameResourceImagePNG
 
 } GameResourceType;
+
+typedef struct GameResourceMD2Model
+{
+    GraphicsGeom * geom;
+
+} GameResourceMD2Model;
 
 typedef struct GameResource
 {
@@ -25,17 +33,19 @@ typedef struct GameResource
             int width;
             int height;
         } image;
+        struct {
+            GameResourceMD2Model model;
+        } md2;
     } info;
 
 } GameResource;
- 
+
 
 GameResource * GameResourceLoadFile(char * file); 
 GameResource * GameResourceLoadPNG(char * file); 
 GameResource * GameResourceLoadMD2(char * file); 
 
-void GameResourceFree(GameResource * resc); 
-
+void GameResourceFree(GameResource * resc);  
 void GameResourceManifestLoad(char * file);
 
 

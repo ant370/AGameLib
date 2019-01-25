@@ -23,7 +23,7 @@ print:
 	$(info VAR is $(SRC_FILES))
 
 main.exe: $(OBJ_FILES)
-	gcc $(LDFLAGS) -o $@ $^ $(INCLUDE) $(LDLIBS)
+	gcc $(LDFLAGS) -o $@ $^ $(INCLUDE) $(LDLIBS) 
 
 $(objects) : %.o : %.c
 	gcc  $(CXXFLAGS)  -c -o $@ $< $(INCLUDE)   $(LDLIBS)

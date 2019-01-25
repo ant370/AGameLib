@@ -2,36 +2,8 @@
 #ifndef ANT_GRAPHICS_H
 #define ANT_GRAPHICS_H
 
-#include "Math.h"
-
- typedef struct VertexPositionTexture 
- {
-     Vec4 Position;
-     Vec4 Texture;
-     Vec4 Normal;
- } VertexPositionTexture;
-
-typedef struct GraphicsShaderProgram
-{
-    unsigned int vertexShader;
-    unsigned int fragmentShader;
-    unsigned int programId;
-    int errorVertFlag;
-    int errorFragFlag;
-    char errorVert[512];
-    char errorFrag[512];
-    char errorProgram[512];
-} GraphicsShaderProgram;
-
-typedef struct GraphicsGeom
-{
-    unsigned int numTris;
-    unsigned int numVerts;
-
-    unsigned int * index;
-    VertexPositionTexture * verts;
-} GraphicsGeom;
-
+#include "Types.h"
+ 
 unsigned int GraphicsCreateVBO();
 unsigned int GraphicsVBOTransfer(unsigned int vbo,int size, VertexPositionTexture * verts);
 unsigned int GraphicsCreateVAO(int size, VertexPositionTexture * verts);
