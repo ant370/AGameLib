@@ -94,11 +94,13 @@ typedef struct GraphicsObject
 
 
 #define GRAPHICS_SCENE_MAX_OBJECTS 1000
-#define GRAPHICS_POINT_LIGHTS 4
+#define GRAPHICS_POINT_LIGHTS 16
 typedef struct GraphicsScene
 {
     GraphicsObject * objects[GRAPHICS_SCENE_MAX_OBJECTS];
     int objectsCount;
+
+    
 
     Vec4 cameraLocation;
     Vec4 cameraLookat;

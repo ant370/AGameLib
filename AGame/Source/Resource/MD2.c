@@ -77,14 +77,14 @@ GameResource * GameResourceLoadMD2(char * file)
     model->id = 0;
     model->isLoaded = 1;
     model->resourceType = 0; 
-
+    int s = sizeof(md2_triangle_t);
     //Transfer structured data
-    md2_header_t *header = malloc(sizeof(md2_header_t));
-    md2_triangle_t *triangles = malloc(sizeof(md2_triangle_t) * header->num_tris);
+    md2_header_t *header = malloc(sizeof(md2_header_t)); 
+    memcpy(header, resc->data, sizeof(md2_header_t)); 
+
+    md2_triangle_t * triangles = malloc(sizeof(struct md2_triangle_t) * header->num_tris);    
     md2_frame_t * frames; //no allocation needed
     md2_texCoord_t * texts = malloc(sizeof(md2_texCoord_t) * header->num_st);
-
-    memcpy(header, resc->data, sizeof(md2_header_t)); 
     memcpy(triangles, resc->data + header->offset_tris,  sizeof(md2_triangle_t) * header->num_tris );
     memcpy(texts,  resc->data + header->offset_st, sizeof(md2_texCoord_t) * header->num_st);
 
@@ -106,8 +106,7 @@ GameResource * GameResourceLoadMD2(char * file)
       frames =  (md2_frame_t *) ( frameData + frameSize*2);
     }
 
-    
-    printf(" %s ", frames->name);
+     
 
     //Build geom
       //Creating Graphics Geometry - 

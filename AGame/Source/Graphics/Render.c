@@ -14,6 +14,7 @@ MessageCallback( GLenum source,
                  const GLchar* message,
                  const void* userParam )
 {
+
   fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
             type, severity, message );
@@ -159,8 +160,8 @@ void GraphicsRenderTexture(GraphicsScene *scene, unsigned int texture)
     glBindTexture(GL_TEXTURE_2D, texture);
     renderQuad();
 }
-
-GraphicsRenderScene(GraphicsScene *scene)
+ 
+void GraphicsRenderScene(GraphicsScene *scene)
 {
     if(scene->shadowBuffer == -1)
     {
@@ -170,16 +171,16 @@ GraphicsRenderScene(GraphicsScene *scene)
     //Render Shadows  
     GraphicsRenderShadows(scene);  
 
-    glEnable(GL_FRAMEBUFFER_SRGB); 
+    //glEnable(GL_FRAMEBUFFER_SRGB); 
     glViewport(0, 0, 1200,900);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // During init, enable debug output
     glEnable              ( GL_DEBUG_OUTPUT );
     glDebugMessageCallback( MessageCallback, 0 );
-
+    glEnable(GL_FRAMEBUFFER_SRGB); 
     glViewport(0, 0, 1200,900);
-    glClearColor(0.20f, 0.20f, 0.20f, 1.0f);
+    glClearColor(0.00f, 0.00f, 0.00f, 1.0f);
     glClearDepth(1.0f);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
@@ -187,7 +188,7 @@ GraphicsRenderScene(GraphicsScene *scene)
     Matrix view  = MatrixLookAt(  scene->cameraLookat, scene->cameraLocation,
                        (Vec4) {0.0f,1.0f,0.0f,0.0f});
       
-    Matrix projection = MatrixProj(1.0f, 100.0f, 1200.0f/900.0f, 60.0f);
+    Matrix projection = MatrixProj(1.0f, 100.0f, 900.0f/1200.0f, 60.0f);
 
     //lightspace
     
@@ -198,7 +199,9 @@ GraphicsRenderScene(GraphicsScene *scene)
 
     Matrix lightProjection = MatrixOrtho(-20.0f, 20.0f, 20.0f, -20.0f, 0.10f, 150.0f);
 
-    projection = MatrixOrtho(-30.0f,  30.0f,  30.0f, -30.0f, 0.10f, 150.0f);
+    float aspect = 1200.0f/900.0f;
+
+    projection = MatrixOrtho(-50.0f * aspect,  50.0f* aspect,  50.0f, -50.0f, 0.10f, 150.0f);
 
 
     for ( int i = 0; i < scene->objectsCount; i++)
@@ -227,10 +230,21 @@ GraphicsRenderScene(GraphicsScene *scene)
         GraphicsShaderSetUniformVec4(obj->material->shader, "directLightColor", scene->directionalLight.color);
         GraphicsShaderSetUniformVec4(obj->material->shader, "cameraPos", scene->cameraLocation);
 
-        GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[0].position", scene->pointLights[0].position);
-        GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[0].color", scene->pointLights[0].color);
-        GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[1].position", scene->pointLights[1].position);
-        GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[1].color", scene->pointLights[1].color);
+
+        for ( int i = 0; i < 16; i++)
+        {
+            char buffer[1000];
+            snprintf(buffer, 1000,"pointLights[%i].position", i);
+            GraphicsShaderSetUniformVec3(obj->material->shader, buffer, scene->pointLights[i].position);
+            
+            snprintf(buffer, 1000,"pointLights[%i].color", i);
+            GraphicsShaderSetUniformVec3(obj->material->shader, buffer, scene->pointLights[i].color);
+        
+        }
+        //GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[0].position", scene->pointLights[0].position);
+        //GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[0].color", scene->pointLights[0].color);
+        //GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[1].position", scene->pointLights[1].position);
+        //GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[1].color", scene->pointLights[1].color);
  
         
         glUniform1i(glGetUniformLocation(obj->material->shader, "ourTexture"), 0);

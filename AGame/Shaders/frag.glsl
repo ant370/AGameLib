@@ -17,7 +17,7 @@ struct PointLight {
     vec3 position;
     vec3 color;
 };  
-#define NR_POINT_LIGHTS 4  
+#define NR_POINT_LIGHTS 16  
 uniform PointLight pointLights[NR_POINT_LIGHTS]; 
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
@@ -64,7 +64,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     if(projCoords.z > 1.0)
         shadow = 0.0;
 
-    int count = 13;
+    int count = 2;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
     for(int x = -count; x <= count; ++x)
     {
@@ -86,7 +86,7 @@ void main()
 
     // Ambient and directional light
     float ambientStrength = 0.025;
-    float sunStrength = 4.2;
+    float sunStrength = 0.0082;
 
     vec3 ambient = ambientStrength * vec3(1.0,1.0,1.0); 
     float diff = max(dot(Normal, directLightPos), 0.0); 
@@ -98,14 +98,13 @@ void main()
 
     float shadow = ShadowCalculation(FragPosLightSpace);     
     vec3 lighting = (ambient + (1.0 - shadow) * (diffuse)) * result; 
-
+ 
     //point lights
     for(int i = 0; i < NR_POINT_LIGHTS; i++)
-        lighting += (CalcPointLight(pointLights[i], Normal.xyz, FragPos.xyz, viewDir) * objectColor.xyz);   
- 
-    
+        lighting += (1.0 - shadow/2.0) * (CalcPointLight(pointLights[i], Normal.xyz, FragPos.xyz, viewDir) * objectColor.xyz);   
+  
 
-    FragColor = vec4(lighting, 1.0);  
+    FragColor = vec4(  lighting, 1.0);  
 } 
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
@@ -120,7 +119,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float attenuation = 1.0 / (distance * distance);  
 
     // combine results 
-    vec3 diffuse  = light.color  * diff;  
+    vec3 diffuse  = light.color  * diff * attenuation;  
     
     return (diffuse);
 } 

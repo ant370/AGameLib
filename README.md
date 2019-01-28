@@ -6,7 +6,4 @@ MD2 Rendering - PARTIALLY DONE
 
 Point Light Shadow Mapping -
 
-Isometric Engine.
-
-Audio File Load
-Audio Play
+Isometric Engine target.
