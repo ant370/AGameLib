@@ -52,9 +52,7 @@ typedef struct GraphicsShaderProgram
     unsigned int programId;
     int errorVertFlag;
     int errorFragFlag;
-    char errorVert[512];
-    char errorFrag[512];
-    char errorProgram[512];
+	
 } GraphicsShaderProgram;
 
 typedef struct GraphicsGeom
@@ -66,6 +64,16 @@ typedef struct GraphicsGeom
     VertexPositionTexture * verts;
 } GraphicsGeom;
 
+
+
+//Rectangle
+typedef struct Rectangle
+{
+	float x;
+	float y;
+	float width;
+	float height;
+} Rectangle;
 
 
 #endif

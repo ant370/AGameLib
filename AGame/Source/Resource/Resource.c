@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include "lodepng.h" 
 
+#define STB_TRUETYPE_IMPLEMENTATION  // force following include to generate implementation
+#include "stb_truetype.h"
+
 GameResource * GameResourceLoadFile(char * file)
 {
     GameResource * resource = malloc(sizeof(GameResource));
@@ -74,3 +77,31 @@ void GameResourceFree(GameResource * resc)
     free (resc->data);
     free (resc);
 }
+
+unsigned char ttf_buffer[1<<20];
+unsigned char temp_bitmap[512*512];
+
+stbtt_bakedchar cdata[96]; //
+
+GameResource * GameResourceLoadFont(char * file, int height)
+{
+    
+    GameResource * data = GameResourceLoadFile(file);
+
+    GameResource * resc = malloc(sizeof(GameResource));
+    resc->info.font.data = malloc(sizeof(stbtt_bakedchar) * 196);
+    resc->info.font.bitmap = malloc(512*512*10);
+    resc->id = -1;
+    resc->size = 4;
+
+
+
+    stbtt_BakeFontBitmap(data->data, 0, height, resc->info.font.bitmap,
+                512,512, 32,96, resc->info.font.data); // no guarantee this fits!
+   
+     
+    GameResourceFree(data);
+    return resc;
+}
+
+ 

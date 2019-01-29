@@ -103,4 +103,5 @@ float MatrixTrace(const Matrix m);
 Matrix MathMatrixInv(Matrix a); 
 //Helper Functions
 void MatrixStringFormated(Matrix m);
+ 
 #endif

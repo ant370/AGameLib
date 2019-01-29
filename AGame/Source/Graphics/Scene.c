@@ -36,6 +36,12 @@ GraphicsScene * GraphicsSceneCreate()
 
     )";
 
+
+    char * basicsVert = IOLoadFile("Shaders/guivert.glsl");
+    char * basicsFrag = IOLoadFile("Shaders/guifrag.glsl");
+    scene->basic2dProgram = GraphicsCreateShader(basicsVert, basicsFrag);
+
+
     scene->shadowProgram = GraphicsCreateShader(vertexShader, fragShader);
     scene->shadowsEnabled = 1; 
     scene->shadowBuffer = -1;
@@ -43,9 +49,11 @@ GraphicsScene * GraphicsSceneCreate()
 
     char * depthVert = IOLoadFile("Shaders/depthvert.glsl");
     char * depthFrag = IOLoadFile("Shaders/depthfrag.glsl");
-
     scene->depthShaderProgram = GraphicsCreateShader(depthVert, depthFrag);
 
+
+    scene->screenHeight = 900.0f;
+    scene->screenWwidth = 1200.0f;
     return scene;
 }
 

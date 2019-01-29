@@ -15,7 +15,7 @@ MessageCallback( GLenum source,
                  const void* userParam )
 {
 
-  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+  fprintf( stderr, "\n\nGL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
             type, severity, message );
 }
@@ -160,7 +160,7 @@ void GraphicsRenderTexture(GraphicsScene *scene, unsigned int texture)
     glBindTexture(GL_TEXTURE_2D, texture);
     renderQuad();
 }
- 
+
 void GraphicsRenderScene(GraphicsScene *scene)
 {
     if(scene->shadowBuffer == -1)
@@ -179,9 +179,11 @@ void GraphicsRenderScene(GraphicsScene *scene)
     glEnable              ( GL_DEBUG_OUTPUT );
     glDebugMessageCallback( MessageCallback, 0 );
     glEnable(GL_FRAMEBUFFER_SRGB); 
+
     glViewport(0, 0, 1200,900);
     glClearColor(0.00f, 0.00f, 0.00f, 1.0f);
     glClearDepth(1.0f);
+
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
  

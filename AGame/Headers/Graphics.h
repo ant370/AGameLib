@@ -4,6 +4,8 @@
 
 #include "Types.h"
 #include <math.h>
+#include "Resource.h"
+
  
 unsigned int GraphicsCreateVBO();
 unsigned int GraphicsVBOTransfer(unsigned int vbo,int size, VertexPositionTexture * verts);
@@ -52,8 +54,8 @@ typedef struct GraphicsMaterial {
 
 unsigned int  GraphicsGenerateCheckerTexture(int patterns); 
 unsigned int GraphicsGenerateUniformTexture(int patterns, int value);
-unsigned int GraphicsGenerateTextureFromImage(char *data, int width, int height);
-
+unsigned int GraphicsGenerateTextureFromImage(char *data, int width, int height); 
+unsigned int GraphicsGenerateTextureFromFont(char * data, int width, int height);
 /**
  * Lights
  * 
@@ -105,6 +107,8 @@ typedef struct GraphicsScene
     Vec4 cameraLocation;
     Vec4 cameraLookat;
 
+    float screenWwidth;
+    float screenHeight;
 
     GraphicsDirectionalLight directionalLight;
     GraphicsPointLight pointLights[GRAPHICS_POINT_LIGHTS];
@@ -117,9 +121,8 @@ typedef struct GraphicsScene
 
     //Renders a depth map to a quad
     GraphicsShaderProgram depthShaderProgram; 
+    GraphicsShaderProgram basic2dProgram;
 
-    unsigned int screenWwidth;
-    unsigned int screenHeight;
 
     //G Buffers 
     unsigned int gBuffer; 
@@ -140,9 +143,10 @@ void GraphicsObjectSetGeom(GraphicsObject * obj, GraphicsGeom * geom);
 void GraphicsShaderSetUniformVec4(unsigned int program, char *name, Vec4 vec );
 void GraphicsRenderScene(GraphicsScene *scene);
 void GraphicsRenderDepthTexture(GraphicsScene *scene);
-void GraphicsRenderTexture(GraphicsScene *scene, unsigned int texture);
+void GraphicsRenderTexture(GraphicsScene *scene, unsigned int texture); 
+void GraphicsGeomCalcNormals(GraphicsGeom *geom);
 
+void Graphics2DDrawTexture(GraphicsScene *scene, unsigned int texture, Rectangle from, Rectangle to);
+void Graphics2DDrawString(GraphicsScene *scene, unsigned int texture, GameResource *font, char * str);
 
-
-void  GraphicsGeomCalcNormals(GraphicsGeom *geom);
 #endif

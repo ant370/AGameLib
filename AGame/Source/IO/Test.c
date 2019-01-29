@@ -23,6 +23,10 @@ int main(int argc, char *argv[])
    
 	GameResource * md2model = GameResourceLoadMD2("C:/Users/antmm/LibJam/AGame/AGame/flag.md2");   
 	
+	GameResource * fontRes = GameResourceLoadFont("C:/Users/antmm/LibJam/AGame/AGame/Resources/OpenSans-Bold.ttf", 50);
+
+	unsigned int fontTexture = GraphicsGenerateTextureFromFont(fontRes->info.font.bitmap, 512, 512);
+
 	//Create scene
 	GraphicsScene *scene = GraphicsSceneCreate();
 	GraphicsObject *box = GraphicsObjectCreate();
@@ -34,6 +38,8 @@ int main(int argc, char *argv[])
 			 resc->info.image.height);
  
  
+	unsigned int checker = GraphicsGenerateCheckerTexture(64);
+
 	GraphicsMaterial mat2;
 	mat2.shader = prog.programId; 
 	mat2.albido = (GraphicsTexture) {  text  }; 
@@ -106,15 +112,13 @@ int main(int argc, char *argv[])
 		 scene->pointLights[i].color = (Vec4) { 8.0f + r, 8.0f      , 1.0f - r  , 1.0f };
 		 scene->pointLights[i].position = (Vec4) { 16.0f*(i-8), 6.5f, 11.0f, 1.0f};
 	}
-
-	Uint32 startclock = 0;
-	Uint32 deltaclock = 0;
-	Uint32 currentFPS = 0;
-
-	startclock = SDL_GetTicks();
+ 
+ 
  	while(running)
-	{ 
+	{  
 		running = (IOUpdate(state)).running;  
+		
+		
 		GraphicsRenderScene(scene);
 
 		float t = (float)(clock()) / 1000.0f;  
@@ -122,9 +126,16 @@ int main(int argc, char *argv[])
   
 		box->rotationAngle = t;
 		box->rotation = (Vec4) {0.0f, 1.0f, 0.0f, 1.0f};
+ 
+		Rectangle from = { 0.0f, 0.0f, 1.0f, 1.0f};
+		Rectangle to = { 0.0f, 0.0f, 500.0f, 500.0f};
 
-		
-		//scene->pointLights[1].color = (Vec4) { d*2.81f, d*10.21f, d*0.21f, 1.0f};
+		//2d
+		//Graphics2DDrawTexture(scene, fontTexture, from, to);
+		//GraphicsRenderDepthTexture(scene);
+		Graphics2DDrawString(scene,fontTexture, fontRes, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl");
+
+		scene->pointLights[1].color = (Vec4) { d*2.81f, d*10.21f, d*0.21f, 1.0f};
 		scene->pointLights[1].position = (Vec4) { 30.0f * sin(t), 20.0f, 30.0f * cos(t), 1.0f};
 	}
 	

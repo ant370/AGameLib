@@ -105,3 +105,28 @@ unsigned int GraphicsGenerateTextureFromImage(char *data, int width, int height)
 
     return texture;
 }
+
+unsigned int GraphicsGenerateTextureFromFont(char * data, int width, int height)
+{
+    unsigned int ftex;
+
+    //Convert from ALPHA -> RGBA
+    char *newdata = malloc (4 * width * height);
+
+    for ( int i = 0; i < width * height; i++)
+    {
+        newdata[4*i] = data[i];
+        newdata[4*i+1] = data[i];
+        newdata[4*i+2] = data[i];
+        newdata[4*i+3] = data[i];
+    }
+
+    glGenTextures(1, &ftex);
+    glBindTexture(GL_TEXTURE_2D, ftex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, newdata); 
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    free(newdata);
+
+    return ftex; 
+}

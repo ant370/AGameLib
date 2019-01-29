@@ -3,14 +3,22 @@
 #define RESOURCE_H
  
 #include "Types.h"
+#include "stb_truetype.h"
 
 typedef enum GameResourceType
 {
     GameResourceManifest,
     GameResourceRawData,
-    GameResourceImagePNG
+    GameResourceImagePNG,
+    GameResourceFont
 
 } GameResourceType;
+
+typedef struct GameResourceBitmapFontFile
+{
+    char * info_face;
+
+} GameResourceBitmapFontFile;
 
 typedef struct GameResourceMD2Model
 {
@@ -36,6 +44,11 @@ typedef struct GameResource
         struct {
             GameResourceMD2Model model;
         } md2;
+        struct 
+        {
+            stbtt_bakedchar * data;
+            unsigned char * bitmap;
+        } font;
     } info;
 
 } GameResource;
@@ -44,6 +57,7 @@ typedef struct GameResource
 GameResource * GameResourceLoadFile(char * file); 
 GameResource * GameResourceLoadPNG(char * file); 
 GameResource * GameResourceLoadMD2(char * file); 
+GameResource * GameResourceLoadFont(char * file, int height);
 
 void GameResourceFree(GameResource * resc);  
 void GameResourceManifestLoad(char * file);
