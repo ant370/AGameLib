@@ -37,18 +37,31 @@ typedef struct GameResource
 
     union
     { 
+        //Image file format
         struct {
             int width;
             int height;
         } image;
+
+        //Model - Animated 3d vertex MD2
         struct {
             GameResourceMD2Model model;
         } md2;
+
+
         struct 
         {
             stbtt_bakedchar * data;
             unsigned char * bitmap;
         } font;
+
+        struct 
+        {
+            int channels;
+            int length;
+            int samples;
+            short * data;
+        } sound;
     } info;
 
 } GameResource;
@@ -58,6 +71,11 @@ GameResource * GameResourceLoadFile(char * file);
 GameResource * GameResourceLoadPNG(char * file); 
 GameResource * GameResourceLoadMD2(char * file); 
 GameResource * GameResourceLoadFont(char * file, int height);
+GameResource * GameResourceLoadOggVorbis(char * file );
+
+//TODO:
+// COMPREHNESIVE MEMMORY MANAGEMENT
+// TYPES for RESOURCES rather than assumption
 
 void GameResourceFree(GameResource * resc);  
 void GameResourceManifestLoad(char * file);

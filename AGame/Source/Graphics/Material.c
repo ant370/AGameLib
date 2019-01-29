@@ -85,9 +85,7 @@ unsigned int GraphicsGenerateUniformTexture(int patterns, int value)
     glBindTexture(GL_TEXTURE_2D, 0);  
     return texture;
 }
-
-
-
+ 
 unsigned int GraphicsGenerateTextureFromImage(char *data, int width, int height)
 { 
     unsigned int texture; 

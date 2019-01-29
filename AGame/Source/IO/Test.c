@@ -8,6 +8,10 @@
 #include <stdbool.h> 
 #include "Graphics.h"
 #include "Resource.h"
+#include "AL/al.h"
+#include "AL/alc.h"
+#include "AntAudio.h"
+ 
 
 int main(int argc, char *argv[])
 {   
@@ -15,6 +19,10 @@ int main(int argc, char *argv[])
 	printf("u"); 
 	IOState state = IOInit();
 
+	AudioSystem * asys = AudioInit(); 
+	GameResource * music = GameResourceLoadOggVorbis("explosion-01.ogg");
+	unsigned int m = AudioResource(asys, 0, music);
+	AudioPlay(asys,m, (Vec4) {0.0f, 0.0f, 0.0f, 0.0f} );
 
 	//Load a shader
 	char * v = IOLoadFile("C:/Users/antmm/LibJam/AGame/AGame/Shaders/vert.glsl");
@@ -24,6 +32,8 @@ int main(int argc, char *argv[])
 	GameResource * md2model = GameResourceLoadMD2("C:/Users/antmm/LibJam/AGame/AGame/flag.md2");   
 	
 	GameResource * fontRes = GameResourceLoadFont("C:/Users/antmm/LibJam/AGame/AGame/Resources/OpenSans-Bold.ttf", 50);
+
+
 
 	unsigned int fontTexture = GraphicsGenerateTextureFromFont(fontRes->info.font.bitmap, 512, 512);
 

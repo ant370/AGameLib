@@ -6,7 +6,9 @@
                 "${myDefaultIncludePath}",
                 "AGame/Headers",
                 "${workspaceFolder}/AGame/Libs/SDL2-2.0.9/x86_64-w64-mingw32/include/SDL2",
-                "${workspaceFolder}/AGame/Libs/glew-2.1.0/include/GL"
+                "${workspaceFolder}/AGame/Libs/glew-2.1.0/include/GL",
+                "${workspaceFolder}/AGame/Libs/openal-soft-1.19.1-bin/openal-soft-1.19.1-bin/include/AL",
+                "${workspaceFolder}/AGame/Libs/openal-soft-1.19.1-bin/openal-soft-1.19.1-bin/include"
             ],
             "cStandard": "c11"
         }

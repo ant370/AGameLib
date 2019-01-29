@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.c": "c",
         "math.h": "c",
         "stdio.h": "c",
         "stdbool.h": "c",
@@ -7,6 +8,8 @@
         "graphics.h": "c",
         "cmath": "c",
         "cstdlib": "c",
-        "physics.h": "c"
+        "physics.h": "c",
+        "al.h": "c",
+        "alc.h": "c"
     }
 }

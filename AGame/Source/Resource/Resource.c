@@ -7,6 +7,10 @@
 #define STB_TRUETYPE_IMPLEMENTATION  // force following include to generate implementation
 #include "stb_truetype.h"
 
+#include "stb_vorbis.c"
+
+#
+
 GameResource * GameResourceLoadFile(char * file)
 {
     GameResource * resource = malloc(sizeof(GameResource));
@@ -104,4 +108,28 @@ GameResource * GameResourceLoadFont(char * file, int height)
     return resc;
 }
 
+
+GameResource * GameResourceLoadOggVorbis(char * file )
+{
+    GameResource * data = GameResourceLoadFile(file);
+    
+    int channels = -1;
+    int sample = -1;
+    short *decoded;
+    
+    int i = stb_vorbis_decode_memory(data->data, data->size, 
+        &channels, &sample, &decoded);
+
+    data->data = NULL;
+    data->info.sound.data = decoded;
+    data->info.sound.channels = channels;
+    data->info.sound.samples = sample;
+    data->info.sound.length = i;
+    
+    //free the initial file memmory
+    free(data->data); //No longer need that..
+
+    //Return the data
+    return data;
+}
  
