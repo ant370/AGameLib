@@ -242,12 +242,7 @@ void GraphicsRenderScene(GraphicsScene *scene)
             snprintf(buffer, 1000,"pointLights[%i].color", i);
             GraphicsShaderSetUniformVec3(obj->material->shader, buffer, scene->pointLights[i].color);
         
-        }
-        //GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[0].position", scene->pointLights[0].position);
-        //GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[0].color", scene->pointLights[0].color);
-        //GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[1].position", scene->pointLights[1].position);
-        //GraphicsShaderSetUniformVec3(obj->material->shader, "pointLights[1].color", scene->pointLights[1].color);
- 
+        } 
         
         glUniform1i(glGetUniformLocation(obj->material->shader, "ourTexture"), 0);
         glUniform1i(glGetUniformLocation(obj->material->shader, "shadowMap"), 1);
@@ -259,7 +254,7 @@ void GraphicsRenderScene(GraphicsScene *scene)
         glBindTexture(GL_TEXTURE_2D, scene->shadowBufferTexture); 
 
         glBindVertexArray(obj->vao);
-        glDrawElements(GL_TRIANGLES, obj->geom->numTris * 3, GL_UNSIGNED_INT,0); 
+        glDrawElementsBaseVertex(GL_TRIANGLES, obj->geom->numTris * 3, GL_UNSIGNED_INT,0,obj->offset); 
         
         
         glActiveTexture(GL_TEXTURE0);

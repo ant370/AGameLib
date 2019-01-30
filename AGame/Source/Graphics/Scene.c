@@ -64,7 +64,7 @@ GraphicsObject * GraphicsObjectCreate()
     obj->rotation = (Vec4) { 0.0f, 1.0f, 0.0f, 0.0f};
     obj->rotationAngle = 0.0f;
     obj->scale = (Vec4) {1.0f, 1.0f, 1.0f,0.0f};
-    
+    obj->offset = 0;
     return obj;
 }
 

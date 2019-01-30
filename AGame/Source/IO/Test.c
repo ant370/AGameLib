@@ -11,10 +11,14 @@
 #include "AL/al.h"
 #include "AL/alc.h"
 #include "AntAudio.h"
+#include "q3_c.h"
  
 
 int main(int argc, char *argv[])
 {   
+
+	q3Scene * qscene = q3SceneCreate(1.0f);
+
 	bool running = true;
 	printf("u"); 
 	IOState state = IOInit();
@@ -22,14 +26,14 @@ int main(int argc, char *argv[])
 	AudioSystem * asys = AudioInit(); 
 	GameResource * music = GameResourceLoadOggVorbis("explosion-01.ogg");
 	unsigned int m = AudioResource(asys, 0, music);
-	AudioPlay(asys,m, (Vec4) {0.0f, 0.0f, 0.0f, 0.0f} );
+	//AudioPlay(asys,m, (Vec4) {0.0f, 0.0f, 0.0f, 0.0f} );
 
 	//Load a shader
 	char * v = IOLoadFile("C:/Users/antmm/LibJam/AGame/AGame/Shaders/vert.glsl");
 	char * f = IOLoadFile("C:/Users/antmm/LibJam/AGame/AGame/Shaders/frag.glsl"); 
     GraphicsShaderProgram prog = GraphicsCreateShader(v,f);
    
-	GameResource * md2model = GameResourceLoadMD2("C:/Users/antmm/LibJam/AGame/AGame/flag.md2");   
+	GameResource * md2model = GameResourceLoadMD2("C:/Users/antmm/LibJam/AGame/AGame/explodes.md2");   
 	
 	GameResource * fontRes = GameResourceLoadFont("C:/Users/antmm/LibJam/AGame/AGame/Resources/OpenSans-Bold.ttf", 50);
 
@@ -61,7 +65,7 @@ int main(int argc, char *argv[])
 	GraphicsObjectSetGeom(box, md2model->info.md2.model.geom);
 	GraphicsSceneAddObject(scene, box);	
 	box->material = &mat2; 
-	box->scale = (Vec4) { 4.5f, 4.5f,4.5f, 4.5f};
+	box->scale = (Vec4) { 1.5f, 1.5f,1.5f, 1.5f};
 	
 
 	GraphicsObject *box2 = GraphicsObjectCreate();
@@ -123,7 +127,7 @@ int main(int argc, char *argv[])
 		 scene->pointLights[i].position = (Vec4) { 16.0f*(i-8), 6.5f, 11.0f, 1.0f};
 	}
  
- 
+	int i = 0;
  	while(running)
 	{  
 		running = (IOUpdate(state)).running;  
@@ -134,8 +138,8 @@ int main(int argc, char *argv[])
 		float t = (float)(clock()) / 1000.0f;  
 		float d = 2.0 +  sin(t*10);
   
-		box->rotationAngle = t;
-		box->rotation = (Vec4) {0.0f, 1.0f, 0.0f, 1.0f};
+		box->rotationAngle = -3.142f / 2.0f;
+		box->rotation = (Vec4) {1.0f, 0.0f, 0.0f, 1.0f};
  
 		Rectangle from = { 0.0f, 0.0f, 1.0f, 1.0f};
 		Rectangle to = { 0.0f, 0.0f, 500.0f, 500.0f};
@@ -145,8 +149,15 @@ int main(int argc, char *argv[])
 		//GraphicsRenderDepthTexture(scene);
 		Graphics2DDrawString(scene,fontTexture, fontRes, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl");
 
-		scene->pointLights[1].color = (Vec4) { d*2.81f, d*10.21f, d*0.21f, 1.0f};
-		scene->pointLights[1].position = (Vec4) { 30.0f * sin(t), 20.0f, 30.0f * cos(t), 1.0f};
+		scene->pointLights[1].color = (Vec4) { d*12.81f, d*45.21f, d*5.21f, 1.0f};
+		scene->pointLights[1].position = (Vec4) { 30.0f * sin(t), 30.0f, 30.0f * cos(t), 1.0f};
+
+
+		i++;
+		box->offset = ( box->geom->numTris * 3 * ( i /  40) ); 
+
+		if ( i > 4000)
+			i = 0;
 	}
 	
  	SDL_Quit(); 

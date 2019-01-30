@@ -111,10 +111,10 @@ GameResource * GameResourceLoadMD2(char * file)
     //Build geom
       //Creating Graphics Geometry - 
     GraphicsGeom * geom = malloc(sizeof(GraphicsGeom));
-    geom->verts = malloc(sizeof(VertexPositionTexture) * header->num_frames * header->num_vertices * 3 * 4 * 100);
-    geom->index = malloc(sizeof(unsigned int) * header->num_frames  * header->num_tris * 3 * 100 );
+    geom->verts = malloc(sizeof(VertexPositionTexture) * header->num_frames * header->num_vertices * 3 * 4 );
+    geom->index = malloc(sizeof(unsigned int) * header->num_frames  * header->num_tris * 3 );
     geom->numTris = header->num_tris;
-    geom->numVerts = header->num_tris * 3; 
+    geom->numVerts = header->num_frames * header->num_vertices * 3 * 4 ; 
     
     
     int index = 0;

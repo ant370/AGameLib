@@ -10,6 +10,8 @@
         "cstdlib": "c",
         "physics.h": "c",
         "al.h": "c",
-        "alc.h": "c"
+        "alc.h": "c",
+        "resource.h": "c",
+        "stdlib.h": "c"
     }
 }

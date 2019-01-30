@@ -91,6 +91,7 @@ typedef struct GraphicsObject
     Vec4 scale;
     float rotationAngle;
     unsigned int vao;
+    unsigned int offset;
 
 } GraphicsObject;
 
