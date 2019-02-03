@@ -6,10 +6,8 @@
 
 #define STB_TRUETYPE_IMPLEMENTATION  // force following include to generate implementation
 #include "stb_truetype.h"
-
 #include "stb_vorbis.c"
-
-#
+ 
 
 GameResource * GameResourceLoadFile(char * file)
 {
@@ -36,7 +34,6 @@ GameResource * GameResourceLoadFile(char * file)
     resource->data = buffer;
     resource->id = 0;
     resource->isLoaded = 1;
-    resource->name = file;
     resource->resourceType = GameResourceRawData;
     resource->size = filelen + 1;
 
@@ -47,12 +44,13 @@ GameResource * GameResourceLoadFile(char * file)
 
 GameResource * GameResourceLoadPNG(char * file)
 { 
+    printf(" LOADING PNG");
     GameResource * resc = GameResourceLoadFile(file);
 
-    unsigned error;
+    unsigned int error = 0;
     unsigned char* image;
-    unsigned width, height;
-    unsigned char* png = 0;
+    unsigned int width, height;
+    unsigned char* png = NULL;
     size_t pngsize;
  
     if(!error) error = lodepng_decode32(&image, &width, &height, resc->data, resc->size);
@@ -72,8 +70,7 @@ GameResource * GameResourceLoadPNG(char * file)
     printf ("LOADED IMAGE %i %i %s", width, height, file);
 
     return newresc;
-}
-
+} 
 
 void GameResourceFree(GameResource * resc)
 {
@@ -83,13 +80,12 @@ void GameResourceFree(GameResource * resc)
 }
 
 unsigned char ttf_buffer[1<<20];
-unsigned char temp_bitmap[512*512];
-
+unsigned char temp_bitmap[512*512]; 
 stbtt_bakedchar cdata[96]; //
 
 GameResource * GameResourceLoadFont(char * file, int height)
 {
-    
+    printf("LOADING Font \n");
     GameResource * data = GameResourceLoadFile(file);
 
     GameResource * resc = malloc(sizeof(GameResource));
@@ -111,14 +107,16 @@ GameResource * GameResourceLoadFont(char * file, int height)
 
 GameResource * GameResourceLoadOggVorbis(char * file )
 {
+    printf("LOADING Ogg Vorbis \n");
     GameResource * data = GameResourceLoadFile(file);
     
     int channels = -1;
     int sample = -1;
-    short *decoded;
+    short *decoded = NULL;
     
     int i = stb_vorbis_decode_memory(data->data, data->size, 
         &channels, &sample, &decoded);
+    printf("LOADING Ogg Vorbis 2 \n");
 
     data->data = NULL;
     data->info.sound.data = decoded;
@@ -127,7 +125,7 @@ GameResource * GameResourceLoadOggVorbis(char * file )
     data->info.sound.length = i;
     
     //free the initial file memmory
-    free(data->data); //No longer need that..
+    //free(data->data); //No longer need that..
 
     //Return the data
     return data;

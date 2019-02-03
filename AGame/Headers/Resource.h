@@ -4,13 +4,17 @@
  
 #include "Types.h"
 #include "stb_truetype.h"
+#include <stdbool.h>
+
 
 typedef enum GameResourceType
 {
     GameResourceManifest,
     GameResourceRawData,
     GameResourceImagePNG,
-    GameResourceFont
+    GameResourceFont,
+    GameResourceOgg,
+    GameResourceMD2
 
 } GameResourceType;
 
@@ -32,7 +36,6 @@ typedef struct GameResource
     unsigned int resourceType;
     unsigned int size;
     unsigned int isLoaded;
-    char * name;
     char * data;
 
     union
@@ -66,12 +69,26 @@ typedef struct GameResource
 
 } GameResource;
 
-
+struct GameResourceCache
+{
+    int resources;
+};
+ 
 GameResource * GameResourceLoadFile(char * file); 
 GameResource * GameResourceLoadPNG(char * file); 
 GameResource * GameResourceLoadMD2(char * file); 
 GameResource * GameResourceLoadFont(char * file, int height);
 GameResource * GameResourceLoadOggVorbis(char * file );
+
+// CORE API
+void GameResourceInit();
+void GameResourceLogResources();
+void GameResourceSetDict(char * val, GameResource * resc);
+void GameResourceHint(char * identity);
+void GameResourceNeed(char * identity);
+int GameResourceLoadNeeded();
+GameResource * GameResourceAvailable(char * identity);
+
 
 //TODO:
 // COMPREHNESIVE MEMMORY MANAGEMENT

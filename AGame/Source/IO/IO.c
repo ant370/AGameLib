@@ -3,10 +3,16 @@
 #include "IO.h"
 #include "SDL.h" 
 #include "glew.h"
-#include <stdio.h>
- 
 
-IOState IOInit(void)
+#include <stdio.h> 
+#include <string.h>
+
+
+
+#define CUTE_FILES_IMPLEMENTATION
+#include "cute_files.h"
+
+struct IOState IOInit(void)
 {
     SDL_Window* window = NULL;
         
@@ -41,7 +47,7 @@ IOState IOInit(void)
         printf( "Error initializing GLEW! %s\n", glewGetErrorString( glewError ) );
     }
 
-    IOState state = 
+    struct IOState state = 
     {
         .surface = screenSurface,
         .window = window,
@@ -54,12 +60,8 @@ IOState IOInit(void)
     return state;
 }
 
-IOState IOUpdate(IOState state)
-{ 
-  
-
-    
-
+struct IOState IOUpdate( struct IOState state)
+{  
     SDL_GL_SwapWindow(state.window);
     //Event handler
     SDL_Event e;
@@ -77,11 +79,7 @@ IOState IOUpdate(IOState state)
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     return state; 
 }
-
-int getval()
-{
-    return 1;
-}
+ 
 
 char* IOLoadFile(char *fileName)
 {
@@ -89,6 +87,7 @@ char* IOLoadFile(char *fileName)
     FILE *fp = fopen(fileName, "r");
     if (fp != NULL) 
     {
+        printf ("OPENED file %s", fileName);
         /* Go to the end of the file. */
         if (fseek(fp, 0L, SEEK_END) == 0) 
         {
@@ -112,5 +111,44 @@ char* IOLoadFile(char *fileName)
         }
         fclose(fp);
     } 
+    else
+    {
+        printf("FAILED to open file %s", fileName);
+    }
+
     return source;
+}
+
+void IOPrintFile(cf_file_t* file, void* udata);
+ 
+void IOPrintFile(cf_file_t* file, void* udata)
+{
+    struct IOFiles * files = (struct IOFiles *) udata; 
+
+    files->files[files->count].name = malloc(strlen(file->name) + 1);
+    files->files[files->count].path = malloc(strlen(file->path) + 1);
+    files->files[files->count].filetype = malloc(strlen(file->ext) + 1);
+
+    strcpy(files->files[files->count].name,file->name); 
+    strcpy(files->files[files->count].path,file->path);
+    strcpy(files->files[files->count].filetype,file->ext);
+
+    files->files[files->count].size = file->size;
+    files->count = files->count + 1;
+
+    
+    //Ensure that max files is not exceeded.
+    assert(files->count != IO_MAX_RESOURCE_FILES);
+    printf("%s \n", files->files[files->count-1].path);
+}
+
+struct IOFiles * IOFileFinder()
+{ 
+    struct IOFiles * files = malloc(sizeof(struct IOFiles)); 
+    files->count =0;
+    files->files = malloc(sizeof(struct IOFile) * IO_MAX_RESOURCE_FILES);
+
+    cf_traverse("Resources", &IOPrintFile, files); 
+
+    return files;
 }

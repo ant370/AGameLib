@@ -12,48 +12,41 @@
 #include "AL/alc.h"
 #include "AntAudio.h"
 #include "q3_c.h"
- 
+
+
 
 int main(int argc, char *argv[])
 {   
+	bool running = true; 
+	struct IOState state = IOInit();
 
-	q3Scene * qscene = q3SceneCreate(1.0f);
-
-	bool running = true;
-	printf("u"); 
-	IOState state = IOInit();
-
-	AudioSystem * asys = AudioInit(); 
-	GameResource * music = GameResourceLoadOggVorbis("explosion-01.ogg");
-	unsigned int m = AudioResource(asys, 0, music);
-	//AudioPlay(asys,m, (Vec4) {0.0f, 0.0f, 0.0f, 0.0f} );
-
+	GameResourceInit(); 
+	GameResource * music = GameResourceAvailable("Example.ogg");
+	
 	//Load a shader
 	char * v = IOLoadFile("C:/Users/antmm/LibJam/AGame/AGame/Shaders/vert.glsl");
 	char * f = IOLoadFile("C:/Users/antmm/LibJam/AGame/AGame/Shaders/frag.glsl"); 
     GraphicsShaderProgram prog = GraphicsCreateShader(v,f);
    
-	GameResource * md2model = GameResourceLoadMD2("C:/Users/antmm/LibJam/AGame/AGame/explodes.md2");   
-	
-	GameResource * fontRes = GameResourceLoadFont("C:/Users/antmm/LibJam/AGame/AGame/Resources/OpenSans-Bold.ttf", 50);
-
-
+	GameResource * md2model = GameResourceAvailable("explodes.md2");
+	GameResource * fontRes = GameResourceAvailable("OpenSans-Bold.ttf");
 
 	unsigned int fontTexture = GraphicsGenerateTextureFromFont(fontRes->info.font.bitmap, 512, 512);
-
+	
+	GameResourceLogResources(); 
 	//Create scene
 	GraphicsScene *scene = GraphicsSceneCreate();
 	GraphicsObject *box = GraphicsObjectCreate();
 	GraphicsMaterial mat;
 
-	GameResource * resc = GameResourceLoadPNG("C:/Users/antmm/LibJam/AGame/AGame/test.png"); 
+	GameResource * resc = GameResourceAvailable("1200px-Mandelbrot_set_image.png"); 
 	unsigned int text = GraphicsGenerateTextureFromImage(resc->data,
 			 resc->info.image.width,
 			 resc->info.image.height);
  
  
 	unsigned int checker = GraphicsGenerateCheckerTexture(64);
-
+	
 	GraphicsMaterial mat2;
 	mat2.shader = prog.programId; 
 	mat2.albido = (GraphicsTexture) {  text  }; 
@@ -65,7 +58,7 @@ int main(int argc, char *argv[])
 	GraphicsObjectSetGeom(box, md2model->info.md2.model.geom);
 	GraphicsSceneAddObject(scene, box);	
 	box->material = &mat2; 
-	box->scale = (Vec4) { 1.5f, 1.5f,1.5f, 1.5f};
+	box->scale = (Vec4) { 0.005f, 0.005f,0.005f, 1.0f};
 	
 
 	GraphicsObject *box2 = GraphicsObjectCreate();
@@ -112,11 +105,10 @@ int main(int argc, char *argv[])
 	scene->directionalLight.color = (Vec4) { 0.0021f, 0.0021f, 0.0031f, 1.0f};
 	scene->pointLights[0].color = (Vec4) { 8.81f, 0.021f, 0.021f, 1.0f};
 	scene->pointLights[0].position = (Vec4) { -5.0f, 5.0f, 1.0f, 1.0f};
-
-	
 	scene->pointLights[1].color = (Vec4) { 16.81f, 28.21f, 0.21f, 1.0f};
 	scene->pointLights[1].position = (Vec4) { -15.0f, 5.0f, 5.0f, 1.0f};
- 	
+
+	
 	srand(time(NULL));
 
 	for (int i =2 ; i < 16; i++)
@@ -130,7 +122,8 @@ int main(int argc, char *argv[])
 	int i = 0;
  	while(running)
 	{  
-		running = (IOUpdate(state)).running;  
+		state = IOUpdate(state);
+		running = state.running;  
 		
 		
 		GraphicsRenderScene(scene);
@@ -145,9 +138,8 @@ int main(int argc, char *argv[])
 		Rectangle to = { 0.0f, 0.0f, 500.0f, 500.0f};
 
 		//2d
-		//Graphics2DDrawTexture(scene, fontTexture, from, to);
-		//GraphicsRenderDepthTexture(scene);
-		Graphics2DDrawString(scene,fontTexture, fontRes, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkl");
+		Graphics2DDrawTexture(scene, text, from, to);
+		Graphics2DDrawString(scene,fontTexture, fontRes, "ALPHA 0.0");
 
 		scene->pointLights[1].color = (Vec4) { d*12.81f, d*45.21f, d*5.21f, 1.0f};
 		scene->pointLights[1].position = (Vec4) { 30.0f * sin(t), 30.0f, 30.0f * cos(t), 1.0f};

@@ -5,6 +5,7 @@
 #include "Types.h"
 #include <math.h>
 #include "Resource.h"
+#include <stdbool.h>
 
  
 unsigned int GraphicsCreateVBO();

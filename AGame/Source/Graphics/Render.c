@@ -134,7 +134,8 @@ void GraphicsRenderShadows(GraphicsScene *scene)
         GraphicsShaderSetUniformMatrix(scene->shadowProgram.programId, "model", model);
  
         glBindVertexArray(obj->vao);
-        glDrawElements(GL_TRIANGLES, obj->geom->numTris * 3, GL_UNSIGNED_INT,0); 
+        glDrawElementsBaseVertex(GL_TRIANGLES, obj->geom->numTris * 3, GL_UNSIGNED_INT,0,obj->offset); 
+        
   
     }
 

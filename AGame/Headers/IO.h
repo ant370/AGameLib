@@ -9,26 +9,38 @@
 #define IO_GAME_VERSION "1.0"
 #define IO_DEFAULT_SCREEN_WIDTH 1200
 #define IO_DEFAULT_SCREEN_HEIGHT 900
+#define IO_MAX_RESOURCE_FILES 2024
 
-/** *
- * IO.h "Input Output" is for platform specific input output.
- * **/ 
 
-typedef struct IOState 
+struct IOState 
 {
     SDL_Surface* surface;
     SDL_Window* window;
     bool running;
 
-} IOState;
+};
 
+struct IOFile
+{
+    char * name;
+    char * path;
+    char * filetype;
+    int size;
+};
+struct IOFiles
+{   
+    int count;
+    struct IOFile * files;
+};
+
+
+ 
 
 
 char * IOLoadFile(char *fileName);
-IOState IOInit(void);
-IOState IOUpdate(IOState state);
-int getval();
-
+struct IOState IOInit(void);
+struct IOFiles * IOFileFinder();
+struct IOState IOUpdate( struct IOState state);
 
 
 

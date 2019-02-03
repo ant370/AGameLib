@@ -131,7 +131,7 @@ void AudioListnerUpdate(AudioSystem * sys,Vec4 position, Vec4 velocity)
 static inline ALenum to_al_format(short channels, short samples)
 {
         bool stereo = (channels > 1);
-        return AL_FORMAT_MONO16;
+        return AL_FORMAT_STEREO16;
         switch (samples) {
         case 16:
                 if (stereo)

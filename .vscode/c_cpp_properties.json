@@ -9,7 +9,8 @@
                 "${workspaceFolder}/AGame/Libs/glew-2.1.0/include/GL",
                 "${workspaceFolder}/AGame/Libs/openal-soft-1.19.1-bin/openal-soft-1.19.1-bin/include/AL",
                 "${workspaceFolder}/AGame/Libs/openal-soft-1.19.1-bin/openal-soft-1.19.1-bin/include",
-                "${workspaceFolder}/AGame/Libs/cu3e/src"
+                "${workspaceFolder}/AGame/Libs/cu3e/src",
+                "${workspaceFolder}/AGame/Headers/Libs"
             ],
             "cStandard": "c11"
         }
